@@ -11,3 +11,29 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.mySidebar {
+  overflow: auto;
+  height: calc(100vh - 48px);
+  position: fixed !important;
+  left: 0;
+  top: 0;
+  bottom: 0;
+}
+
+.mycard-text {
+  background-color: #fff;
+  display: flex;
+  align-items: center;
+  padding: 50px;
+  height: 100%;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.mycard-graphic {
+  background-color: #fff;
+  padding: 16px;
+  height: 100%;
+  min-height: 400px;
+}

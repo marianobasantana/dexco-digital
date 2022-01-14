@@ -17,7 +17,7 @@ function GraphicA() {
   };
 
   return (
-    <div className="GraphicA" style={{width:'100%'}}>
+    <div className="GraphicA" style={{width:'100%', maxWidth: '900px', height: '200px', margin: '0 auto'}}>
       <WordCloud {...config} />
     </div>
   );
