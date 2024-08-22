@@ -1,133 +1,92 @@
-import React, { useState } from "react";
-import './App.css';
-import 'antd/dist/antd.css';
-import { Layout, Row, Col, Divider } from 'antd';
-import GraphicA from './components/GraphicA';
-import GraphicB from './components/GraphicB';
-import GraphicC from './components/GraphicC';
-import GraphicD from './components/GraphicD';
-import Menu from './components/Menu';
+import React, { useState } from 'react'
+import './App.css'
+import { Button, Form, Input, Rate, Result } from 'antd'
+import axios from 'axios'
 
 function App() {
+  const { TextArea } = Input
+  const [loading, setLoading] = useState(false)
+  const [status, setStatus] = useState('form')
 
-  const { Content, Footer, Sider } = Layout;
+  const reset = () => {
+    setLoading(false)
+    setStatus('form')
+  }
 
-  const [collapsed, setCollapsed] = useState(false);
+  const onFinish = async (values) => {
+    setLoading(true)
 
-  const onCollapse = () => {
-    setCollapsed(!collapsed);
-  };
+    const { data } = await axios.post(
+      'https://api.baserow.io/api/database/rows/table/343034/?user_field_names=true',
+      {
+        'note': values.rate,
+        'comment': values?.comment || '',
+        'userProjectId': ''
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Token ORMJeRqQ2hkasDF33Pf0jcjSqKtkhUna'
+        }
+      })
 
-  const phraseA = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent ex mi, tincidunt et dignissim sit amet, laoreet et ipsum. Vivamus nec velit fermentum, suscipit nisl eget, vulputate elit. Cras convallis porttitor velit quis auctor. Aliquam arcu tellus, finibus in ligula sit amet, fermentum sagittis lectus. Cras ullamcorper felis id sapien luctus pulvinar. Morbi ut ipsum id leo accumsan hendrerit nec ac augue. Integer malesuada fringilla ornare.';
-  const phraseB = 'Integer sapien lorem, fringilla ut scelerisque eget, consectetur a quam. Nunc vitae lectus non justo vestibulum scelerisque id non metus. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Aliquam vitae lectus a lacus dignissim sagittis non a purus. Phasellus auctor gravida nisl. Etiam sodales tristique lectus vel gravida. Sed blandit mi aliquam enim faucibus, vel pulvinar urna sollicitudin. Morbi a venenatis orci, egestas rhoncus tortor.';
+    console.log('Result', data)
+    setStatus('success')
+    setLoading(false)
+  }
+
+  const contentForm = (
+    <Form
+      name='basic'
+      layout='vertical'
+      initialValues={{
+        remember: true,
+      }}
+      onFinish={onFinish}
+      autoComplete='off'
+      style={{ width: '100%' }}
+    >
+      <Form.Item name='rate' label='Qual nota o site merece?'
+        rules={[
+          {
+            required: true,
+            message: 'Adicione uma nota',
+          },
+        ]}>
+        <Rate />
+      </Form.Item>
+
+      <Form.Item name='comment' label='Comentário'>
+        <TextArea rows={4} />
+      </Form.Item>
+
+      <Form.Item
+      >
+        <Button type='primary' htmlType='submit' loading={loading}>
+          Enviar
+        </Button>
+      </Form.Item>
+    </Form>
+  )
+
+  const contentResult = (
+    <Result
+      status={status === 'success' ? 'success' : 'error'}
+      title={status === 'success' ? 'Obrigado por responder nossa pesquisa' : 'Ocorreu um erro, tente novamente'}
+      subTitle=''
+      extra={[
+        <Button type='primary' key='console' onClick={reset}>
+          {status === 'success' ? 'Fechar' : 'Refazer'}
+        </Button>
+      ]}
+    />
+  )
 
   return (
-    <Layout className="App" style={{ minHeight: '100vh' }}>
-      <Sider collapsible collapsed={collapsed} onCollapse={onCollapse} className="mySidebar">
-        <Menu />
-      </Sider>
-      <Layout className="site-layout" style={{ marginLeft: collapsed ? 96 : 200, transition: 'margin-left 0.3s ease' }}>
-        <Content style={{ margin: '16px' }}>
-          <div style={{ padding: 24, backgroundColor: '#fff' }}>
-            <Row gutter={[16, 16]} align="middle">
-              <Col className="gutter-row" span={24} style={{ background: '#001529' }}>
-                <GraphicA />
-              </Col>
-            </Row>
-          </div>
-
-          <a href="section-01" name="section-01" id="section-01"> </a>
-          <Divider orientation="left" orientationMargin={0}>Seção 1</Divider>
-          <div style={{ padding: 24, minHeight: 360, backgroundColor: '#fff' }}>
-            <Row gutter={[16, 16]} align="middle">
-              <Col className="gutter-row" xs={24} sm={24} md={12}>
-                <GraphicB />
-              </Col>
-              <Col className="gutter-row" xs={24} sm={24} md={12}>
-                <div className="mycard-text">
-                  <p>{phraseA}</p>
-                  <p>{phraseB}</p>
-                </div>
-              </Col>
-            </Row>
-          </div>
-
-          <Divider orientation="left" orientationMargin={0}>Seção 1.1</Divider>
-          <Row gutter={[16, 16]} type="flex">
-            <Col className="gutter-row" xs={24} sm={24} md={12}>
-              <div className="mycard-text">
-                <p>{phraseB}</p>
-              </div>
-            </Col>
-            <Col className="gutter-row" xs={24} sm={24} md={12}>
-              <div className="mycard-graphic"><GraphicB /></div>
-            </Col>
-          </Row>
-
-          <a href="section-02" name="section-02" id="section-02"> </a>
-          <Divider orientation="left" orientationMargin={0}>Seção 2</Divider>
-          <Row gutter={[16, 16]} type="flex">
-            <Col className="gutter-row" xs={24} sm={24} md={12}>
-              <div className="mycard-graphic"><GraphicB /></div>
-            </Col>
-            <Col className="gutter-row" xs={24} sm={24} md={12}>
-              <div className="mycard-text">
-                <p>{phraseA}</p>
-                <p>{phraseB}</p>
-              </div>
-            </Col>
-
-            <Col className="gutter-row" xs={24} sm={24} md={12}>
-              <div className="mycard-text">
-                <p>{phraseB}</p>
-              </div>
-            </Col>
-            <Col className="gutter-row" xs={24} sm={24} md={12}>
-              <div className="mycard-graphic"><GraphicB /></div>
-            </Col>
-
-            <Col className="gutter-row" xs={24} sm={24} md={12} lg={8}>
-              <div className="mycard-text">
-                <p>{phraseA}</p>
-                <p>{phraseB}</p>
-              </div>
-            </Col>
-            <Col className="gutter-row" xs={24} sm={24} md={12} lg={8}>
-              <div className="mycard-text">
-                <p>{phraseB}</p>
-              </div>
-            </Col>
-            <Col className="gutter-row" xs={24} sm={24} md={12} lg={8}>
-              <div className="mycard-graphic"><GraphicC /></div>
-            </Col>
-          </Row>
-
-          <a href="section-05" name="section-05" id="section-05"> </a>
-          <Divider orientation="left" orientationMargin={0}>Seção 5</Divider>
-          <Row gutter={[16, 16]} type="flex">
-            <Col className="gutter-row" xs={24} sm={24} md={12} lg={8}>
-              <div className="mycard-graphic"><GraphicB /></div>
-            </Col>
-            <Col className="gutter-row" xs={24} sm={24} md={12} lg={8}>
-              <div className="mycard-text">
-                <p>{phraseB}</p>
-              </div>
-            </Col>
-            <Col className="gutter-row" xs={24} sm={24} md={12} lg={8}>
-              <div className="mycard-graphic"><GraphicC /></div>
-            </Col>
-            <Col className="gutter-row" xs={24} sm={24} md={12}>
-              <div className="mycard-graphic"><GraphicD /></div>
-            </Col>
-            <Col className="gutter-row" xs={24} sm={24} md={12}>
-              <div className="mycard-graphic"><GraphicB /></div>
-            </Col>
-          </Row>
-        </Content>
-        <Footer style={{ textAlign: 'center' }}>Copyright ©2018 Created by ...</Footer>
-      </Layout>
-    </Layout>
-  );
+    <div className='App' style={{ padding: '80px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+      {status === 'form' ? contentForm : contentResult}
+    </div>
+  )
 }
 
-export default App;
+export default App
