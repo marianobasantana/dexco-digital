@@ -46,7 +46,7 @@ const survey = (function () {
 
 	const createButtons = () => {
 		elemBtnOpen.setAttribute('id', 'btn-open-survey')
-		elemBtnOpen.setAttribute('style', 'position: absolute; z-index: 99; bottom: 20px; left: 20px; border-radius: 20%; height: 80px; width: 80px; border: 1px solid #806AEB; background: #806AEB; text-transform: uppercase; font-size: 10px; font-family: "Roboto", Helvetica, sans-serif; cursor: pointer;')
+		elemBtnOpen.setAttribute('style', 'position: fixed; z-index: 99; bottom: 20px; left: 20px; border-radius: 20%; height: 80px; width: 80px; border: 1px solid #806AEB; background: #806AEB; text-transform: uppercase; font-size: 10px; font-family: "Roboto", Helvetica, sans-serif; cursor: pointer;')
 		elemBtnOpen.innerHTML = 'Responder Pesquisa'
 		elemBody.querySelector('& > div').append(elemBtnOpen)
 		elemBtnOpen.addEventListener('click', openSurvey)
@@ -54,7 +54,7 @@ const survey = (function () {
 		// surveyBtnOpen.addEventListener('click', openSurvey)
 
 		elemBtnClose.setAttribute('id', 'btn-close-survey')
-		elemBtnClose.setAttribute('style', 'position: absolute; z-index: 98; bottom: 20px; left: 20px; border-radius: 20%; height: 80px; width: 80px; border: 1px solid #806AEB; background: #806AEB; text-transform: uppercase; font-size: 10px; font-family: "Roboto", Helvetica, sans-serif; cursor: pointer;')
+		elemBtnClose.setAttribute('style', 'position: fixed; z-index: 98; bottom: 20px; left: 20px; border-radius: 20%; height: 80px; width: 80px; border: 1px solid #806AEB; background: #806AEB; text-transform: uppercase; font-size: 10px; font-family: "Roboto", Helvetica, sans-serif; cursor: pointer;')
 		elemBtnClose.innerHTML = 'Fechar Pesquisa'
 		elemBody.querySelector('& > div').append(elemBtnClose)
 		elemBtnClose.addEventListener('click', closeSurvey)
@@ -63,8 +63,9 @@ const survey = (function () {
 	}
 
 	var init = function () {
-		elemIframe.setAttribute('src', './form.html')
-		elemIframe.setAttribute('style', 'border: 1px solid #000; width: 100%; max-width: 400px; max-height: 400px; position: absolute; bottom: 10px; right: 10px; z-index: 99; height: 300px;')
+		// elemIframe.setAttribute('src', './form.html')
+		elemIframe.setAttribute('src', 'https://marianobasantana.github.io/dexco-digital/form.html')
+		elemIframe.setAttribute('style', 'border: 1px solid #000; width: 100%; max-width: 400px; max-height: 400px; position: fixed; bottom: 10px; right: 10px; z-index: 99; height: 300px;')
 
 		elemDiv.append(elemIframe)
 
