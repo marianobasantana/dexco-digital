@@ -1,0 +1,55 @@
+<html>
+
+<head>
+	<title>Site</title>
+	<style>
+		body {
+			background-color: #333;
+			color: #fff;
+			font-family: 'Roboto', Helvetica, sans-serif;
+			width: 100%;
+			min-height: 100vh;
+			margin: 0;
+			padding: 0;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			text-align: center;
+			position: relative;
+		}
+
+		button {
+			width: 150px;
+			height: 40px;
+			text-transform: uppercase;
+			border: 1px solid #000;
+			cursor: pointer;
+		}
+	</style>
+</head>
+
+<body>
+	<div>
+		<h1>Aplicação</h1>
+		<p>Página de exemplo para teste da POC de Survey</p>
+		<button onclick="survey?.openSurvey()">Abrir Pesquisar</button>
+		<button onclick="survey?.closeSurvey()">Fechar Pesquisa</button>
+		<br />
+		<br />
+	</div>
+
+	<script>
+		localStorage.setItem('userApplicationId', '123456789')
+	</script>
+	<script>
+			(function () {
+				const elemBody = document.querySelector('body')
+				const elemScript = document.createElement('script')
+				elemScript.setAttribute('src', './survey.js')
+				elemBody.append(elemScript)
+				console.log('Adicionou Survey')
+			})()
+	</script>
+</body>
+
+</html>

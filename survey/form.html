@@ -1,0 +1,185 @@
+<html>
+
+<head>
+	<title>Formulário</title>
+	<style>
+		* {
+			box-sizing: border-box;
+		}
+
+		body {
+			background-color: #FFF;
+			color: #000;
+			font-family: 'Roboto', Helvetica, sans-serif;
+			width: 100%;
+			margin: 0;
+			padding: 10px;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			text-align: center;
+			position: relative;
+		}
+
+		.message-success,
+		.message-error {
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			background: #fff;
+			justify-content: center;
+			align-items: center;
+			display: none;
+			flex-direction: column;
+			gap: 20px;
+		}
+
+		h1 {
+			margin: 0;
+			font-size: 28px;
+		}
+
+		form {
+			margin: 0;
+		}
+
+		fieldset {
+			border: 0;
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			gap: 20px;
+			margin: 0;
+			padding: 16px 0;
+		}
+
+		input[type=number] {
+			height: 30px;
+			border: 1px solid #000;
+		}
+
+		textarea {
+			height: 80px;
+			border: 1px solid #000;
+		}
+
+		.btn-primary {
+			border: 1px solid;
+			height: 30px;
+			width: 130px;
+			background: #000;
+			color: #fff;
+			cursor: pointer;
+		}
+
+		.btn-secondary {
+			border: 1px solid;
+			height: 30px;
+			width: 130px;
+			background: #fff;
+			color: #000;
+			cursor: pointer;
+		}
+	</style>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+</head>
+
+<body>
+	<div>
+		<h1>Pesquisa</h1>
+		<form id="myForm">
+			<fieldset>
+				<label>Nota *</label>
+				<input type="number" required name="rate" oninvalid="this.setCustomValidity('Obrigatório')"
+					oninput="this.setCustomValidity('')" />
+			</fieldset>
+			<fieldset>
+				<label>Comentário</label>
+				<textarea name="comment"></textarea>
+			</fieldset>
+			<fieldset>
+				<button id="btn-close-survey2" class="btn-secondary btn-close-survey">Cancelar</button>
+				<input type="submit" value="Enviar" class="btn-primary">
+			</fieldset>
+		</form>
+
+		<div class="message-success">
+			<h2>Mensagem enviada com sucesso</h2>
+			<button id="btn-close-survey2" class="btn-primary btn-close-survey">Fechar</button>
+		</div>
+
+		<div class="message-error">
+			<h2>Erro ao enviar mensagem, tente novamente mais tarde</h2>
+			<div style="display: flex; gap: 20px;">
+				<button id="btn-close-survey2" class="btn-secondary btn-close-survey">Fechar</button>
+				<button id="btn-close-survey2" class="btn-primary btn-return-form">Tentar novamente</button>
+			</div>
+		</div>
+	</div>
+
+	<script>
+		const mySurvey = (function () {
+			let userApplicationId = ''
+
+			const sendForm = (e) => {
+				e.preventDefault()
+				const formDataEntries = new FormData(myForm).entries()
+				const { rate, comment } = Object.fromEntries(formDataEntries)
+
+				console.log(rate, comment)
+
+				jQuery.ajax({
+					headers: {
+						'Content-Type': 'application/json',
+						'Authorization': 'Token ORMJeRqQ2hkasDF33Pf0jcjSqKtkhUna'
+					},
+					method: 'POST',
+					url: 'https://api.baserow.io/api/database/rows/table/343034/?user_field_names=true',
+					data: JSON.stringify({
+						'note': rate,
+						'comment': comment || '',
+						'userProjectId': userApplicationId
+					})
+				})
+					.done(function (msg) {
+						console.log('Sucesso')
+						document.querySelector('.message-success').style.display = 'flex'
+					})
+					.fail(function () {
+						console.log('Erro')
+						document.querySelector('.message-error').style.display = 'flex'
+					})
+			}
+			const init = function () {
+				const myForm = document.getElementById('myForm')
+				myForm.addEventListener('submit', sendForm)
+
+				document.querySelectorAll('.btn-close-survey').forEach((item) => {
+					item.addEventListener('click', () => {
+						parent.postMessage('myevent', '*')
+					})
+				})
+
+				document.querySelectorAll('.btn-return-form').forEach((item) => {
+					item.addEventListener('click', () => {
+						document.querySelector('.message-error').style.display = 'none'
+						document.querySelector('.message-success').style.display = 'none'
+					})
+				})
+
+				userApplicationId = localStorage.getItem('userApplicationId') || ''
+				console.log('ID do Usuário na Aplicação', userApplicationId)
+			}
+
+			return {
+				init: init
+			}
+		})()
+
+		mySurvey.init()
+	</script>
+</body>
+
+</html>
