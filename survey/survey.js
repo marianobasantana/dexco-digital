@@ -48,7 +48,7 @@ const survey = (function () {
 		elemBtnOpen.setAttribute('id', 'btn-open-survey')
 		elemBtnOpen.setAttribute('style', 'position: fixed; z-index: 99; bottom: 20px; left: 20px; border-radius: 20%; height: 80px; width: 80px; border: 1px solid #806AEB; background: #806AEB; text-transform: uppercase; font-size: 10px; font-family: "Roboto", Helvetica, sans-serif; cursor: pointer;')
 		elemBtnOpen.innerHTML = 'Responder Pesquisa'
-		elemBody.querySelector('& > div').append(elemBtnOpen)
+		elemBody.append(elemBtnOpen)
 		elemBtnOpen.addEventListener('click', openSurvey)
 		// const surveyBtnOpen = document.getElementById('btn-open-survey')
 		// surveyBtnOpen.addEventListener('click', openSurvey)
@@ -56,7 +56,7 @@ const survey = (function () {
 		elemBtnClose.setAttribute('id', 'btn-close-survey')
 		elemBtnClose.setAttribute('style', 'position: fixed; z-index: 98; bottom: 20px; left: 20px; border-radius: 20%; height: 80px; width: 80px; border: 1px solid #806AEB; background: #806AEB; text-transform: uppercase; font-size: 10px; font-family: "Roboto", Helvetica, sans-serif; cursor: pointer;')
 		elemBtnClose.innerHTML = 'Fechar Pesquisa'
-		elemBody.querySelector('& > div').append(elemBtnClose)
+		elemBody.append(elemBtnClose)
 		elemBtnClose.addEventListener('click', closeSurvey)
 		// const surveyBtnClose = document.getElementById('btn-close-survey')
 		// surveyBtnClose.addEventListener('click', closeSurvey)
@@ -70,6 +70,7 @@ const survey = (function () {
 		elemDiv.append(elemIframe)
 
 		createButtons()
+		console.log('Survey finished')
 	}
 
 	return {
